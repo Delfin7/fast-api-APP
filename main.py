@@ -10,7 +10,7 @@ app = FastAPI()
 
 @app.get("/")
 def root():
-    return {"message": "Hello World"}
+    return {"start": "1970-01-01"}
 
 
 class HelloResp(BaseModel):
