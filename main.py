@@ -22,6 +22,11 @@ def read_item(name: str):
     return HelloResp(msg=f"Hello {name}")
 
 
+@app.get("/method", status_code=200)
+def method_get():
+    return {"method": "GET"}
+
+
 class GiveMeSomethingRq(BaseModel):
     first_key: str
 

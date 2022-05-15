@@ -1,25 +1,28 @@
-from fastapi.testclient import TestClient
-import pytest
-from main import app
+import unittest
 
-client = TestClient(app)
+import requests
 
-
-def test_read_main():
-    response = client.get("/")
-    assert response.status_code == 200
-    assert response.json() == {"message": "Hello World"}
+from heroku import HerokuApp
 
 
-@pytest.mark.parametrize("name", ['Zenek', 'Marek', 'Alojzy Niezdąży'])
-def test_hello_name(name):
-    # name = 'elo'
-    response = client.get(f"/hello/{name}")
-    assert response.status_code == 200
-    assert response.json() == {'msg': f"Hello {name}"}
+class HerokuSetupTest(unittest.TestCase):
+    def setUp(self):
+        self._response = requests.get(HerokuApp.app_url)
+
+    def test_url_exists(self):
+        self.assertIsNotNone(HerokuApp.app_url)
+        self.assertIsInstance(HerokuApp.app_url, str)
+        self.assertNotEqual(HerokuApp.app_url, "")
+
+    def test_status_code(self):
+        self.assertEqual(self._response.status_code, 200)
+
+    def test_response(self):
+        self.assertEqual(
+            self._response.json(),
+            {"start": "1970-01-01"},
+        )
 
 
-def test_receive_something():
-    response = client.post("/dej/mi/coś", json={'first_key': 'some_value'})
-    assert response.json() == {"received": {'first_key': 'some_value'},
-                             "constant_data": "python jest super"}
+if __name__ == "__main__":
+    unittest.main()
