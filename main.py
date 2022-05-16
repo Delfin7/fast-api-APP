@@ -78,7 +78,7 @@ class Item(BaseModel):
     date: str
     event: str
 
-@app.put("/events", status_code=201)
+@app.put("/events", status_code=200)
 def method_get(item: Item, response: Response):
     try:
         file = open("events.json", "r")
