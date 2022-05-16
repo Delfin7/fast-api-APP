@@ -84,9 +84,9 @@ def check_file_exist():
     return json.loads(event_list)
 
 
-def check_date_format(date: str):
+def check_date_format(input_date: str):
     try:
-        datetime.strptime(date, '%Y-%m-%d')
+        datetime.strptime(input_date, '%Y-%m-%d')
     except ValueError:
         Response.status_code = status.HTTP_400_BAD_REQUEST
         return 0
@@ -111,19 +111,15 @@ def add_event(item: Item):
 
 
 @app.get("/events/{date}", status_code=200)
-def check_events(date: str, response: Response):
-    try:
-        datetime.strptime(date, '%Y-%m-%d')
-    except ValueError:
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return 0
+def check_events(date: str):
+    check_date_format(date)
     event_list = check_file_exist()
     get_event_list = []
     for record in event_list:
         if record["date"] == date:
             get_event_list.append(record)
     if not get_event_list:
-        response.status_code = status.HTTP_404_NOT_FOUND
+        Response.status_code = status.HTTP_404_NOT_FOUND
         return 0
     else:
         return event_list
