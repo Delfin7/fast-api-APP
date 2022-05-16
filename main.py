@@ -104,6 +104,7 @@ def method_get(item: Item, response: Response):
     event_list = json.loads(temp_event_list)
     return event_list[len(event_list) - 1]
 
+
 @app.get("/events", status_code=201)
 def method_get(response: Response):
     try:
