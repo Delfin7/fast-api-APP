@@ -92,7 +92,7 @@ def method_get(item: Item, response: Response):
     file.close()
     event_list = json.loads(temp_event_list)
     event_list.append({"id": len(event_list),
-                       "event": item.event,
+                       "name": item.event,
                        "date": item.date,
                        "date_added": str(date.today())})
     file = open("events.json", "w")
