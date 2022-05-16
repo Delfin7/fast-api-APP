@@ -6,6 +6,8 @@ from pydantic import BaseModel
 
 from datetime import date
 
+import json
+
 app = FastAPI()
 
 
@@ -68,15 +70,21 @@ def method_get(name: str, number: int, response: Response):
     if name.lower() not in weekday or weekday[name.lower()] != number:
         response.status_code = status.HTTP_400_BAD_REQUEST
 
-event_list = []
 class Item(BaseModel):
     date: str
     event: str
 
 @app.put("/events", status_code=201)
 async def method_get(item: Item, response: Response):
+    file = open("event_list.json", "r")
+    event_list = json.loads(file)
+    file.close()
     event_list.append({"id": len(event_list),
                        "event": item.event,
                        "date": item.date,
                        "date_added": "date.today()"})
+    file = open("event_list.json", "w")
+    file.write(json.dumps(event_list))
+    file.close()
+
     return event_list#[len(event_list)]
