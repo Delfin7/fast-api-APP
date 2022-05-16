@@ -108,7 +108,7 @@ def method_get(item: Item, response: Response):
 @app.get("/events/{date}", status_code=201)
 def method_get(date: str, response: Response):
     try:
-        datetime.datetime.strptime(date, '%Y-%m-%d')
+        datetime.strptime(date, '%Y-%m-%d')
     except ValueError:
         response.status_code = status.HTTP_400_BAD_REQUEST
         return 0
