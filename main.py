@@ -67,10 +67,13 @@ def method_get(name: str, number: int, response: Response):
     if name.lower() not in weekday or weekday[name.lower()] != number:
         response.status_code = status.HTTP_400_BAD_REQUEST
 
+i = -1
 class Item(BaseModel):
     date: str
     event: str
 
 @app.put("/events", status_code=200)
 def method_get(item: Item, response: Response):
-    return item
+    global i
+    i+=1
+    return i
