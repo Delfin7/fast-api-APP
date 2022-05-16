@@ -56,7 +56,7 @@ def receive_something(rq: GiveMeSomethingRq):
     return GiveMeSomethingResp(received=rq.dict())
 
 
-@app.get("/day/{parameters}", status_code=200)
+@app.get("/day{parameters}", status_code=200)
 def method_get(name: str, number: int, response: Response):
     name: str
     number: int
