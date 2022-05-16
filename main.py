@@ -4,7 +4,7 @@ from fastapi import FastAPI, Response, status
 
 from pydantic import BaseModel
 
-from datetime import date
+from datetime import date, datetime
 
 import json
 
@@ -105,8 +105,13 @@ def method_get(item: Item, response: Response):
     return event_list[len(event_list) - 1]
 
 
-@app.get("/events", status_code=201)
-def method_get(response: Response):
+@app.get("/events/{date}", status_code=201)
+def method_get(date: str, response: Response):
+    try:
+        datetime.datetime.strptime(date, '%Y-%m-%d')
+    except ValueError:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return 0
     try:
         file = open("events.json", "r")
     except:
@@ -118,4 +123,12 @@ def method_get(response: Response):
     temp_event_list = file.read()
     file.close()
     event_list = json.loads(temp_event_list)
-    return event_list
+    get_event_list = []
+    for record in event_list:
+        if record["date"] == date:
+            get_event_list.append(record)
+    if get_event_list == []:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return 0
+    else:
+        return event_list
