@@ -73,7 +73,7 @@ class Item(BaseModel):
     event: str
 
 @app.put("/events", status_code=200)
-def method_get(item: Item, response: Response):
+async def method_get(item: Item, response: Response):
     global i
-    i+=1
+    i +=1
     return i
