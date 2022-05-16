@@ -1,6 +1,6 @@
 from typing import Dict
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Response, status
 
 from pydantic import BaseModel
 
@@ -54,6 +54,12 @@ class GiveMeSomethingResp(BaseModel):
 @app.post("/dej/mi/coś", response_model=GiveMeSomethingResp)
 def receive_something(rq: GiveMeSomethingRq):
     return GiveMeSomethingResp(received=rq.dict())
+
+@app.get("/day/{name}{number}", status_code=200)
+def method_get(name: str, number: str, response: Response):
+    weekday = {"Monday": 1, "Tuesday": 2, "Wednesday": 3, "Thursday": 4, "Friday": 5, "Saturday": 6, "Sunday": 7}
+    if weekday[name] != number:
+        response.status_code = status.HTTP_400_BAD_REQUEST
 
 
 
