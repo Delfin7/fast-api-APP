@@ -82,3 +82,7 @@ def method_get(item: Item, response: Response):
                        "date": item.date,
                        "date_added": "date.today()"})
     return event_list[len(event_list) - 1]
+
+@app.get("/events", status_code=201)
+def method_get(response: Response):
+    return event_list
