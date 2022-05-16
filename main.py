@@ -65,7 +65,7 @@ class HelloResp2(BaseModel):
 
 
 @app.get("/day", status_code=200)
-def method_get(name: str, number: int, response: Response):
+def day_check(name: str, number: int, response: Response):
     weekday = {"monday": 1, "tuesday": 2, "wednesday": 3, "thursday": 4, "friday": 5, "saturday": 6, "sunday": 7}
     if name.lower() not in weekday or weekday[name.lower()] != number:
         response.status_code = status.HTTP_400_BAD_REQUEST
@@ -79,7 +79,7 @@ class Item(BaseModel):
     event: str
 
 @app.put("/events", status_code=200)
-def method_get(item: Item, response: Response):
+def add_event(item: Item, response: Response):
     try:
         file = open("events.json", "r")
     except:
@@ -106,7 +106,7 @@ def method_get(item: Item, response: Response):
 
 
 @app.get("/events/{date}", status_code=200)
-def method_get(date: str, response: Response):
+def check_events(date: str, response: Response):
     try:
         datetime.strptime(date, '%Y-%m-%d')
     except ValueError:
