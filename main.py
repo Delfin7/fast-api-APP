@@ -1,15 +1,10 @@
 from typing import Dict
-
 from fastapi import FastAPI, Response, status
-
 from pydantic import BaseModel
-
 from datetime import date, datetime
-
 import json
 
 app = FastAPI()
-
 
 @app.get("/")
 def root():
@@ -18,7 +13,6 @@ def root():
 
 class HelloResp(BaseModel):
     msg: str
-
 
 @app.get("/hello/{name}", response_model=HelloResp)
 def read_item(name: str):
@@ -29,39 +23,37 @@ def read_item(name: str):
 def method_get():
     return {"method": "GET"}
 
+
 @app.put("/method", status_code=200)
 def method_put():
     return {"method": "PUT"}
+
 
 @app.options("/method", status_code=200)
 def method_options():
     return {"method": "OPTIONS"}
 
+
 @app.delete("/method", status_code=200)
 def method_delete():
     return {"method": "DELETE"}
+
 
 @app.post("/method", status_code=201)
 def method_post():
     return {"method": "POST"}
 
+
 class GiveMeSomethingRq(BaseModel):
     first_key: str
-
 
 class GiveMeSomethingResp(BaseModel):
     received: Dict
     constant_data: str = "python jest super"
 
-
 @app.post("/dej/mi/coś", response_model=GiveMeSomethingResp)
 def receive_something(rq: GiveMeSomethingRq):
     return GiveMeSomethingResp(received=rq.dict())
-
-class HelloResp2(BaseModel):
-    name: str
-    number: int
-
 
 
 @app.get("/day", status_code=200)
@@ -71,15 +63,12 @@ def day_check(name: str, number: int, response: Response):
         response.status_code = status.HTTP_400_BAD_REQUEST
 
 
-
-
-
 class Item(BaseModel):
     date: str
     event: str
 
 @app.put("/events", status_code=200)
-def add_event(item: Item, response: Response):
+def add_event(item: Item):
     try:
         file = open("events.json", "r")
     except:
