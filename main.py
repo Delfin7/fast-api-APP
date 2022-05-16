@@ -84,17 +84,13 @@ def check_file_exist():
     return json.loads(event_list)
 
 
-def check_date_format(date: str, response):
+@app.put("/events", status_code=200)
+def add_event(item: Item, response: Response):
     try:
-        datetime.strptime(date, '%Y-%m-%d')
+        datetime.strptime(item.date, '%Y-%m-%d')
     except ValueError:
         response.status_code = status.HTTP_400_BAD_REQUEST
         return 0
-
-
-@app.put("/events", status_code=200)
-def add_event(item: Item, response: Response):
-    check_date_format(item.date, response)
     event_list = check_file_exist()
     event_list.append({"id": len(event_list),
                        "name": item.event,
@@ -112,7 +108,11 @@ def add_event(item: Item, response: Response):
 
 @app.get("/events/{date}", status_code=200)
 def check_events(date: str, response: Response):
-    check_date_format(date, response)
+    try:
+        datetime.strptime(date, '%Y-%m-%d')
+    except ValueError:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return 0
     event_list = check_file_exist()
     get_event_list = []
     for record in event_list:
