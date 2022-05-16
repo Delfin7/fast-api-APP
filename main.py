@@ -62,7 +62,7 @@ class HelloResp2(BaseModel):
 @app.get("/day{name}&{number}", status_code=200)
 def method_get(name: str, number: int, response: Response):
     weekday = {"monday": 1, "tuesday": 2, "wednesday": 3, "thursday": 4, "friday": 5, "saturday": 6, "sunday": 7}
-    # if weekday[name.lower()] != number:
-    #     response.status_code = status.HTTP_400_BAD_REQUEST
-    #     return "Błąd"
+    if weekday[name.lower()] != number:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return "Błąd"
     return number
