@@ -55,14 +55,11 @@ class GiveMeSomethingResp(BaseModel):
 def receive_something(rq: GiveMeSomethingRq):
     return GiveMeSomethingResp(received=rq.dict())
 
-class Parameter(BaseModel):
-    name: str
-    number: str
 
 @app.get("/day/{parameters}", status_code=200)
-def method_get(name: str, number: str, response: Response):
+def method_get(name: str, number: int, response: Response):
     name: str
-    number: str
+    number: int
     weekday = {"monday": 1, "tuesday": 2, "wednesday": 3, "thursday": 4, "friday": 5, "saturday": 6, "sunday": 7}
     if weekday[name.lower()] != number:
         response.status_code = status.HTTP_400_BAD_REQUEST
