@@ -76,7 +76,8 @@ class Item(BaseModel):
     event: str
 
 @app.put("/events", status_code=201)
-async def method_get(item: Item, response: Response):
+def method_get(item: Item, response: Response):
+    global event_list
     event_list.append({"id": len(event_list),
                        "event": item.event,
                        "date": item.date,
