@@ -65,4 +65,4 @@ def method_get(name: str, number: int, response: Response):
     # if weekday[name.lower()] != number:
     #     response.status_code = status.HTTP_400_BAD_REQUEST
     #     return "Błąd"
-    return "tak"
+    return name
