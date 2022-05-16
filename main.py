@@ -56,7 +56,7 @@ def receive_something(rq: GiveMeSomethingRq):
     return GiveMeSomethingResp(received=rq.dict())
 
 
-@app.get("/day{name}{number}", status_code=200)
+@app.get("/day?{name}&{number}", status_code=200)
 def method_get(name: str, number: int, response: Response):
     weekday = {"monday": 1, "tuesday": 2, "wednesday": 3, "thursday": 4, "friday": 5, "saturday": 6, "sunday": 7}
     if weekday[name.lower()] != number:
