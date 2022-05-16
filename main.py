@@ -4,6 +4,7 @@ from fastapi import FastAPI, Response, status
 
 from pydantic import BaseModel
 
+from datetime import date
 
 app = FastAPI()
 
@@ -67,13 +68,14 @@ def method_get(name: str, number: int, response: Response):
     if name.lower() not in weekday or weekday[name.lower()] != number:
         response.status_code = status.HTTP_400_BAD_REQUEST
 
-i = -1
+event_list = []
 class Item(BaseModel):
     date: str
     event: str
 
-@app.put("/events", status_code=200)
+@app.put("/events", status_code=201)
 async def method_get(item: Item, response: Response):
-    global i
-    i +=1
-    return i
+    event_list.append({"id": len(event_list),
+                       "event": item.event,
+                       "date": item.date,
+                       "date_added": date.today()})
