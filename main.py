@@ -78,5 +78,5 @@ async def method_get(item: Item, response: Response):
     event_list.append({"id": len(event_list),
                        "event": item.event,
                        "date": item.date,
-                       "date_added": date.today()})
+                       "date_added": "date.today()"})
     return event_list[len(event_list)]
