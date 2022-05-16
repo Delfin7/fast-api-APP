@@ -3,8 +3,10 @@ from fastapi import FastAPI, Response, status
 from pydantic import BaseModel
 from datetime import date, datetime
 import json
+from os.path import exists
 
 app = FastAPI()
+
 
 @app.get("/")
 def root():
@@ -13,6 +15,7 @@ def root():
 
 class HelloResp(BaseModel):
     msg: str
+
 
 @app.get("/hello/{name}", response_model=HelloResp)
 def read_item(name: str):
@@ -47,9 +50,11 @@ def method_post():
 class GiveMeSomethingRq(BaseModel):
     first_key: str
 
+
 class GiveMeSomethingResp(BaseModel):
     received: Dict
     constant_data: str = "python jest super"
+
 
 @app.post("/dej/mi/coś", response_model=GiveMeSomethingResp)
 def receive_something(rq: GiveMeSomethingRq):
@@ -67,18 +72,17 @@ class Item(BaseModel):
     date: str
     event: str
 
+
 def check_file_exist():
-    try:
-        file = open("events.json", "r")
-    except:
+    if not exists("events.json"):
         file = open("events.json", "w")
         file.write(json.dumps([]))
-    finally:
         file.close()
     file = open("events.json", "r")
     event_list = file.read()
     file.close()
     return json.loads(event_list)
+
 
 @app.put("/events", status_code=200)
 def add_event(item: Item):
@@ -109,7 +113,7 @@ def check_events(date: str, response: Response):
     for record in event_list:
         if record["date"] == date:
             get_event_list.append(record)
-    if get_event_list == []:
+    if not get_event_list:
         response.status_code = status.HTTP_404_NOT_FOUND
         return 0
     else:
