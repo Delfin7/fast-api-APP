@@ -112,7 +112,11 @@ def add_event(item: Item):
 
 @app.get("/events/{date}", status_code=200)
 def check_events(date: str, response: Response):
-    check_date_format(date)
+    try:
+        datetime.strptime(date, '%Y-%m-%d')
+    except ValueError:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return 0
     event_list = check_file_exist()
     get_event_list = []
     for record in event_list:
