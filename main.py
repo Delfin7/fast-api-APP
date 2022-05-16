@@ -70,19 +70,51 @@ def method_get(name: str, number: int, response: Response):
     if name.lower() not in weekday or weekday[name.lower()] != number:
         response.status_code = status.HTTP_400_BAD_REQUEST
 
-event_list = []
+
+
+
+
 class Item(BaseModel):
     date: str
     event: str
 
 @app.put("/events", status_code=201)
 def method_get(item: Item, response: Response):
+    try:
+        file = open("events.json", "r")
+    except:
+        file = open("events.json", "w")
+        file.write(json.dumps([]))
+    finally:
+        file.close()
+    file = open("events.json", "r")
+    temp_event_list = file.read()
+    file.close()
+    event_list = json.loads(temp_event_list)
     event_list.append({"id": len(event_list),
                        "event": item.event,
                        "date": item.date,
                        "date_added": "date.today()"})
+    file = open("events.json", "w")
+    file.write(json.dumps(event_list))
+    file.close()
+    file = open("events.json", "r")
+    temp_event_list = file.read()
+    file.close()
+    event_list = json.loads(temp_event_list)
     return event_list[len(event_list) - 1]
 
 @app.get("/events", status_code=201)
 def method_get(response: Response):
+    try:
+        file = open("events.json", "r")
+    except:
+        file = open("events.json", "w")
+        file.write(json.dumps([]))
+    finally:
+        file.close()
+    file = open("events.json", "r")
+    temp_event_list = file.read()
+    file.close()
+    event_list = json.loads(temp_event_list)
     return event_list
