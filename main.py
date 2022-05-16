@@ -81,4 +81,4 @@ def method_get(item: Item, response: Response):
                        "event": item.event,
                        "date": item.date,
                        "date_added": "date.today()"})
-    return event_list[len(event_list) -1]
+    return event_list[len(event_list) - 1]
