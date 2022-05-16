@@ -67,8 +67,7 @@ class Item(BaseModel):
     date: str
     event: str
 
-@app.put("/events", status_code=200)
-def add_event(item: Item):
+def check_file_exist():
     try:
         file = open("events.json", "r")
     except:
@@ -77,9 +76,13 @@ def add_event(item: Item):
     finally:
         file.close()
     file = open("events.json", "r")
-    temp_event_list = file.read()
+    event_list = file.read()
     file.close()
-    event_list = json.loads(temp_event_list)
+    return json.loads(event_list)
+
+@app.put("/events", status_code=200)
+def add_event(item: Item):
+    event_list = check_file_exist()
     event_list.append({"id": len(event_list),
                        "name": item.event,
                        "date": item.date,
@@ -101,17 +104,7 @@ def check_events(date: str, response: Response):
     except ValueError:
         response.status_code = status.HTTP_400_BAD_REQUEST
         return 0
-    try:
-        file = open("events.json", "r")
-    except:
-        file = open("events.json", "w")
-        file.write(json.dumps([]))
-    finally:
-        file.close()
-    file = open("events.json", "r")
-    temp_event_list = file.read()
-    file.close()
-    event_list = json.loads(temp_event_list)
+    event_list = check_file_exist()
     get_event_list = []
     for record in event_list:
         if record["date"] == date:
