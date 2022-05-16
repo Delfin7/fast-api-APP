@@ -86,6 +86,11 @@ def check_file_exist():
 
 @app.put("/events", status_code=200)
 def add_event(item: Item):
+    try:
+        datetime.strptime(item.date, '%Y-%m-%d')
+    except ValueError:
+        Response.status_code = status.HTTP_400_BAD_REQUEST
+        return 0
     event_list = check_file_exist()
     event_list.append({"id": len(event_list),
                        "name": item.event,
