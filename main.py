@@ -105,7 +105,7 @@ def method_get(item: Item, response: Response):
     return event_list[len(event_list) - 1]
 
 
-@app.get("/events/{date}", status_code=201)
+@app.get("/events/{date}", status_code=200)
 def method_get(date: str, response: Response):
     try:
         datetime.strptime(date, '%Y-%m-%d')
