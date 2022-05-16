@@ -26,6 +26,21 @@ def read_item(name: str):
 def method_get():
     return {"method": "GET"}
 
+@app.put("/method", status_code=200)
+def method_put():
+    return {"method": "PUT"}
+
+@app.options("/method", status_code=200)
+def method_options():
+    return {"method": "OPTIONS"}
+
+@app.delete("/method", status_code=200)
+def method_delete():
+    return {"method": "DELETE"}
+
+@app.post("/method", status_code=201)
+def method_post():
+    return {"method": "POST"}
 
 class GiveMeSomethingRq(BaseModel):
     first_key: str
