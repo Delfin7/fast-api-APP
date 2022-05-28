@@ -125,15 +125,6 @@ def check_events(date: str, response: Response):
     else:
         return event_list
 
-@app.get("/static", response_class=HTMLResponse)
+@app.get("/start", response_class=HTMLResponse)
 def index_static():
-    return """
-    <html>
-        <head>
-            <title>Some HTML in here</title>
-        </head>
-        <body>
-            <h1>Look Ma! HTML!</h1>
-        </body>
-    </html>
-    """
+    return "<h1>The unix epoch started at 1970-01-01</h1>"
