@@ -1,5 +1,6 @@
 from typing import Dict
 from fastapi import FastAPI, Response, status
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from datetime import date, datetime
 import json
@@ -123,3 +124,16 @@ def check_events(date: str, response: Response):
         return 0
     else:
         return event_list
+
+@app.get("/static", response_class=HTMLResponse)
+def index_static():
+    return """
+    <html>
+        <head>
+            <title>Some HTML in here</title>
+        </head>
+        <body>
+            <h1>Look Ma! HTML!</h1>
+        </body>
+    </html>
+    """
