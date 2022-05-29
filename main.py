@@ -152,12 +152,13 @@ def age_verification(credentials: HTTPBasicCredentials = Depends(security)):
         )
     return "<h1>Welcome " + credentials.username + "! You are " + str(age//365) + "</h1>"
 
-@app.get("/info")
+@app.get("/info")#, response_class=HTMLResponse
 def check_events(format: str | None = '', user_agent: str | None = Header(default=None)):
     if format == 'json':
         return {"user_agent": user_agent}
     elif format == 'html':
-        return '<input type="text" id=user-agent name=agent value="' + user_agent + '">'
+        html_content = '<input type="text" id=user-agent name=agent value="' + user_agent + '">'
+        return HTMLResponse(content=html_content, status_code=200)
     else:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
