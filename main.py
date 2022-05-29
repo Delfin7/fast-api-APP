@@ -131,12 +131,19 @@ def check_events(date: str, response: Response):
 def index_static():
     return "<h1>The unix epoch started at 1970-01-01</h1>"
 
+good_age = 365 * 16
 
 @app.post("/check")
 def age_verification(credentials: HTTPBasicCredentials = Depends(security)):
     try:
         datetime.strptime(credentials.password, '%Y-%m-%d')
     except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+    if(datetime.date.today().days - datetime.strptime(credentials.password, '%Y-%m-%d').date() < good_age):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
