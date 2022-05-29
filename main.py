@@ -158,4 +158,9 @@ def check_events(format: str, user_agent: str | None = Header(default=None)):
         return {"user_agent": user_agent}
     elif format == 'html':
         return '<input type="text" id=user-agent name=agent value="' + user_agent + '">'
-    #return format
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Basic"},
+        )
