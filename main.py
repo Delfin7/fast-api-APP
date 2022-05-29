@@ -138,7 +138,8 @@ def age_verification(credentials: HTTPBasicCredentials = Depends(security)):
         datetime.strptime(credentials.password, '%Y-%m-%d')
     except ValueError:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Basic"},
         )
-        return 0
     return "<h1>Welcome [imie]! You are [wiek]</h1>"
