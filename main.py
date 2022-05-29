@@ -152,7 +152,7 @@ def age_verification(credentials: HTTPBasicCredentials = Depends(security)):
         )
     return "<h1>Welcome " + credentials.username + "! You are " + str(age//365) + "</h1>"
 
-@app.get("/info", response_class=HTMLResponse)
+@app.get("/info")
 def check_events(format: str | None = '', user_agent: str | None = Header(default=None)):
     if format == 'json':
         return {"user_agent": user_agent}
