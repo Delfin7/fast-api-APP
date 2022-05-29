@@ -1,6 +1,6 @@
 from typing import Dict
-from fastapi import Depends, FastAPI, Response, status, HTTPException
-from fastapi.responses import HTMLResponse, UJSONResponse
+from fastapi import Depends, FastAPI, Response, status, HTTPException, Header
+from fastapi.responses import HTMLResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pydantic import BaseModel
 from datetime import date, datetime
@@ -152,6 +152,10 @@ def age_verification(credentials: HTTPBasicCredentials = Depends(security)):
         )
     return "<h1>Welcome " + credentials.username + "! You are " + str(age//365) + "</h1>"
 
-@app.get("/info{format}", status_code=200)
-def check_events(format: str, response: Response):
+@app.get("/info{format}{headers}")
+def check_events(format: str, response: Response, user_agent: str | None = Header(default=None)):
+    if format == 'json':
+        return {"user_agent": user_agent}
+    elif format == 'json':
+        return '< input type = "text" id = user - agent name = agent value = "<wartość User-Agent>" >'
     return format
