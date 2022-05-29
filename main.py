@@ -11,6 +11,7 @@ app = FastAPI()
 
 security = HTTPBasic()
 
+
 @app.get("/")
 def root():
     return {"start": "1970-01-01"}
@@ -127,41 +128,33 @@ def check_events(date: str, response: Response):
     else:
         return event_list
 
+
 @app.get("/start", response_class=HTMLResponse)
 def index_static():
     return "<h1>The unix epoch started at 1970-01-01</h1>"
 
+
 good_age = 365 * 16
+
 
 @app.post("/check", response_class=HTMLResponse)
 def age_verification(credentials: HTTPBasicCredentials = Depends(security)):
     try:
         datetime.strptime(credentials.password, '%Y-%m-%d')
     except ValueError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email or password",
-            headers={"WWW-Authenticate": "Basic"},
-        )
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     age = (date.today() - datetime.strptime(credentials.password, '%Y-%m-%d').date()).days
     if age < good_age:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email or password",
-            headers={"WWW-Authenticate": "Basic"},
-        )
-    return "<h1>Welcome " + credentials.username + "! You are " + str(age//365) + "</h1>"
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+    return "<h1>Welcome " + credentials.username + "! You are " + str(age // 365) + "</h1>"
 
-@app.get("/info")#, response_class=HTMLResponse
-def check_events(format: str | None = '', user_agent: str | None = Header(default=None)):
+
+@app.get("/info")
+def info(format: str | None = '', user_agent: str | None = Header(default=None)):
     if format == 'json':
         return {"user_agent": user_agent}
     elif format == 'html':
         html_content = '<input type="text" id=user-agent name=agent value="' + user_agent + '">'
         return HTMLResponse(content=html_content, status_code=200)
     else:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Incorrect email or password",
-            headers={"WWW-Authenticate": "Basic"},
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
