@@ -130,7 +130,7 @@ def index_static():
     return "<h1>The unix epoch started at 1970-01-01</h1>"
 
 class Personal(BaseModel):
-    login: str
+    username: str
     password: str
 
 @app.post("/check", status_code=200)
