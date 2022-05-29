@@ -157,5 +157,5 @@ def check_events(format: str, user_agent: str | None = Header(default=None)):
     if format == 'json':
         return {"user_agent": user_agent}
     elif format == 'html':
-        return '< input type = "text" id = user - agent name = agent value = "<' + user_agent + '" >'
+        return '<input type="text" id=user-agent name=agent value="' + user_agent + '">'
     #return format
