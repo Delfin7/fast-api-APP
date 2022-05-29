@@ -1,6 +1,7 @@
 from typing import Dict
-from fastapi import FastAPI, Response, status
+from fastapi import Depends, FastAPI, Response, status, HTTPException
 from fastapi.responses import HTMLResponse
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pydantic import BaseModel
 from datetime import date, datetime
 import json
@@ -8,6 +9,7 @@ from os.path import exists
 
 app = FastAPI()
 
+security = HTTPBasic()
 
 @app.get("/")
 def root():
@@ -133,11 +135,13 @@ class Personal(BaseModel):
     username: str
     password: str
 
-@app.post("/check", status_code=200)
-def age_verification(personal: Personal, response: Response):
+@app.post("/check")
+def age_verification(personal: Personal, credentials: HTTPBasicCredentials = Depends(security)):
     try:
         datetime.strptime(personal.password, '%Y-%m-%d')
     except ValueError:
-        response.status_code = status.HTTP_401_UNAUTHORIZED
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED
+        )
         return 0
     return "<h1>Welcome [imie]! You are [wiek]</h1>"
