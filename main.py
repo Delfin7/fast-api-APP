@@ -143,7 +143,7 @@ def age_verification(credentials: HTTPBasicCredentials = Depends(security)):
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Basic"},
         )
-    if(datetime.date.today().days - datetime.strptime(credentials.password, '%Y-%m-%d').date() < good_age):
+    if(date.today().days - datetime.strptime(credentials.password, '%Y-%m-%d').date() < good_age):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
