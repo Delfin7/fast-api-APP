@@ -128,3 +128,16 @@ def check_events(date: str, response: Response):
 @app.get("/start", response_class=HTMLResponse)
 def index_static():
     return "<h1>The unix epoch started at 1970-01-01</h1>"
+
+class Personal(BaseModel):
+    login: str
+    password: str
+
+@app.post("/check", status_code=200)
+def age_verification(personal: Personal, response: Response):
+    try:
+        datetime.strptime(personal.password, '%Y-%m-%d')
+    except ValueError:
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        return 0
+    return "<h1>Welcome [imie]! You are [wiek]</h1>"
