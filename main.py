@@ -162,3 +162,7 @@ def info(format: str | None = '', user_agent: str | None = Header(default=None))
 @app.get("/save/{string}", status_code=404)
 def get_string():
     pass
+
+@app.put("/save/{string}", status_code=200)
+def put_string():
+    pass
