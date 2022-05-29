@@ -149,4 +149,4 @@ def age_verification(credentials: HTTPBasicCredentials = Depends(security)):
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Basic"},
         )
-    return "<h1>Welcome [imie]! You are [wiek]</h1>"
+    return "<h1>Welcome " + credentials.username + "! You are [wiek]</h1>"
