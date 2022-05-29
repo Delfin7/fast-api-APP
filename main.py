@@ -131,14 +131,11 @@ def check_events(date: str, response: Response):
 def index_static():
     return "<h1>The unix epoch started at 1970-01-01</h1>"
 
-class Personal(BaseModel):
-    username: str
-    password: str
 
 @app.post("/check")
-def age_verification(personal: Personal, credentials: HTTPBasicCredentials = Depends(security)):
+def age_verification(credentials: HTTPBasicCredentials = Depends(security)):
     try:
-        datetime.strptime(personal.password, '%Y-%m-%d')
+        datetime.strptime(credentials.password, '%Y-%m-%d')
     except ValueError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED
