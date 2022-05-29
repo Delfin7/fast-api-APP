@@ -159,6 +159,6 @@ def info(format: str | None = '', user_agent: str | None = Header(default=None))
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
-@app.get("/save/{string}", status_code=200)
+@app.get("/save/{string}", status_code=404)
 def get_string():
     pass
