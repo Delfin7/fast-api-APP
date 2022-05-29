@@ -1,6 +1,6 @@
 from typing import Dict
 from fastapi import Depends, FastAPI, Response, status, HTTPException
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, UJSONResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pydantic import BaseModel
 from datetime import date, datetime
@@ -133,7 +133,7 @@ def index_static():
 
 good_age = 365 * 16
 
-@app.post("/check")
+@app.post("/check", response_class=HTMLResponse)
 def age_verification(credentials: HTTPBasicCredentials = Depends(security)):
     try:
         datetime.strptime(credentials.password, '%Y-%m-%d')
@@ -149,5 +149,4 @@ def age_verification(credentials: HTTPBasicCredentials = Depends(security)):
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Basic"},
         )
-    headers = {"Content-Type": "text/html"},
     return "<h1>Welcome [imie]! You are [wiek]</h1>"
