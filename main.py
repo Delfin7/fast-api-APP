@@ -1,6 +1,6 @@
 from typing import Dict
 from fastapi import Depends, FastAPI, Response, status, HTTPException, Header
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pydantic import BaseModel
 from datetime import date, datetime
@@ -159,10 +159,27 @@ def info(format: str | None = '', user_agent: str | None = Header(default=None))
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
+def check_file_exist_2():
+    if not exists("strings.json"):
+        file = open("strings.json", "w")
+        file.write(json.dumps([]))
+        file.close()
+    file = open("strings.json", "r")
+    strings_list = file.read()
+    file.close()
+    return json.loads(strings_list)
+
 @app.get("/save/{string}", status_code=404)
-def get_string():
-    pass
+def get_string(string: str):
+    string_list = check_file_exist_2()
+    if string in string_list:
+        return RedirectResponse("https://delfin7.herokuapp.com/info", status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
 @app.put("/save/{string}", status_code=200)
-def put_string():
-    pass
+def put_string(string: str):
+    string_list = check_file_exist_2()
+    if string not in string_list:
+        string_list.append(string)
+    file = open("strings.json", "w")
+    file.write(json.dumps(string_list))
+    file.close()
