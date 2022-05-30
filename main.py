@@ -183,3 +183,12 @@ def put_string(string: str):
     file = open("strings.json", "w")
     file.write(json.dumps(string_list))
     file.close()
+
+@app.delete("/save/{string}", status_code=200)
+def pdelete_string(string: str):
+    string_list = check_file_exist_2()
+    if string in string_list:
+        string_list.remove(string)
+    file = open("strings.json", "w")
+    file.write(json.dumps(string_list))
+    file.close()
