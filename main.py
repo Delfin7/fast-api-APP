@@ -6,6 +6,7 @@ from pydantic import BaseModel
 from datetime import date, datetime
 import json
 from os.path import exists
+import sqlite3
 
 app = FastAPI()
 
@@ -192,3 +193,22 @@ def pdelete_string(string: str):
     file = open("strings.json", "w")
     file.write(json.dumps(string_list))
     file.close()
+
+@app.on_event("startup")
+async def startup():
+    app.db_connection = sqlite3.connect("northwind.db")
+    app.db_connection.text_factory = lambda b: b.decode(errors="ignore")  # northwind specific
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    app.db_connection.close()
+
+@app.get("/products")
+async def products():
+    cursor = await app.db_connection.cursor()
+    products_query = await cursor.execute("SELECT ProductName FROM Products")
+    products = await products_query.fetchall()
+    return {
+        "products": products,
+    }
