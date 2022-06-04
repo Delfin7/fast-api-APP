@@ -206,9 +206,9 @@ async def shutdown():
 
 @app.get("/products")
 async def products():
-    products_cursor = await app.db_connection.execute("SELECT ProductName FROM Products")
-    products = await products_cursor.fetchall()
+    cursor = app.db_connection.cursor()
+    products_query = await cursor.execute("SELECT ProductName FROM Products")
+    products = await products_query.fetchall()
     return {
-        "products_counter": len(products),
-        "products": products
+        "products": products,
     }
