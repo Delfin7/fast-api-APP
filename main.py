@@ -213,7 +213,8 @@ async def suppliers():
     print(suppliers)
     for supplier in suppliers:
         print(supplier)
-        for record in supplier:
-            print(record)
-            lista.append({"SupplierID": record[0], "CompanyName": record[1]})
+        lista.append(supplier)
+        # for record in supplier:
+        #     print(record)
+        #     lista.append({"SupplierID": record[0], "CompanyName": record[1]})
     return lista
