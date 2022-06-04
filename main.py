@@ -210,7 +210,10 @@ async def suppliers():
     lista = []
     cursor = await app.db_connection.execute("SELECT SupplierID, CompanyName FROM Suppliers;")
     suppliers = await cursor.fetchall()
+    print(suppliers)
     for supplier in suppliers:
+        print(supplier)
         for record in supplier:
+            print(record)
             lista.append({"SupplierID": record[0], "CompanyName": record[1]})
     return lista
