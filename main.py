@@ -197,6 +197,7 @@ def delete_string(string: str):
 @app.on_event("startup")
 async def startup():
     app.db_connection = await aiosqlite.connect("northwind.db")
+    app.db_connection.text_factory = str
     #app.db_connection.text_factory = lambda b: b.decode(errors="ignore")  # northwind specific
 
 
