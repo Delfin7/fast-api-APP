@@ -186,7 +186,7 @@ def put_string(string: str):
     file.close()
 
 @app.delete("/save/{string}", status_code=200)
-def pdelete_string(string: str):
+def delete_string(string: str):
     string_list = check_file_exist_2()
     if string in string_list:
         string_list.remove(string)
@@ -206,9 +206,9 @@ async def shutdown():
 
 @app.get("/products")
 async def products():
-    cursor = await app.db_connection.cursor()
-    products_query = await cursor.execute("SELECT ProductName FROM Products")
-    products = await products_query.fetchall()
+    products_cursor = await app.db_connection.execute("SELECT ProductName FROM Products")
+    products = await products_cursor.fetchall()
     return {
-        "products": products,
+        "products_counter": len(products),
+        "products": products
     }
