@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from datetime import date, datetime
 import json
 from os.path import exists
-import sqlite3
+import aiosqlite
 
 app = FastAPI()
 
@@ -196,19 +196,17 @@ def delete_string(string: str):
 
 @app.on_event("startup")
 async def startup():
-    app.db_connection = sqlite3.connect("northwind.db")
+    app.db_connection = await aiosqlite.connect("northwind.db")
     app.db_connection.text_factory = lambda b: b.decode(errors="ignore")  # northwind specific
 
 
 @app.on_event("shutdown")
 async def shutdown():
-    app.db_connection.close()
+    await app.db_connection.close()
 
-@app.get("/products")
-async def products():
-    cursor = app.db_connection.cursor()
-    products_query = await cursor.execute("SELECT ProductName FROM Products")
-    products = await products_query.fetchall()
-    return {
-        "products": products,
-    }
+
+@app.get("/data")
+async def root():
+    cursor = await app.db_connection.execute("....")
+    data = await cursor.fetchall()
+    return {"data": data}
