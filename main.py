@@ -205,10 +205,10 @@ async def shutdown():
     await app.db_connection.close()
 
 
-@app.get("/data")
-async def root():
-    cursor = await app.db_connection.execute("SELECT ProductName FROM Products")
-    products = await cursor.fetchall()
+@app.get("/suppliers", status_code=200)
+async def suppliers():
+    cursor = await app.db_connection.execute("SELECT SupplierID, CompanyName FROM Suppliers;")
+    suppliers = await cursor.fetchall()
     return {
-        "products": products,
+        "products": suppliers,
     }
