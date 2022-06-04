@@ -197,7 +197,7 @@ def delete_string(string: str):
 @app.on_event("startup")
 async def startup():
     app.db_connection = await aiosqlite.connect("northwind.db")
-    app.db_connection.text_factory = lambda b: b.decode(errors="ignore")  # northwind specific
+    #app.db_connection.text_factory = lambda b: b.decode(errors="ignore")  # northwind specific
 
 
 @app.on_event("shutdown")
@@ -207,6 +207,7 @@ async def shutdown():
 
 @app.get("/suppliers", status_code=200)
 async def suppliers():
+    print("Forêts d'érables")
     lista = []
     cursor = await app.db_connection.execute("SELECT SupplierID, CompanyName FROM Suppliers;")
     suppliers = await cursor.fetchall()
