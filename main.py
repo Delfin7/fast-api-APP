@@ -207,6 +207,8 @@ async def shutdown():
 
 @app.get("/data")
 async def root():
-    cursor = await app.db_connection.execute("....")
-    data = await cursor.fetchall()
-    return {"data": data}
+    cursor = await app.db_connection.execute("SELECT ProductName FROM Products")
+    products = await cursor.fetchall()
+    return {
+        "products": products,
+    }
