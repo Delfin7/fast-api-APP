@@ -207,8 +207,10 @@ async def shutdown():
 
 @app.get("/suppliers", status_code=200)
 async def suppliers():
+    lista = []
     cursor = await app.db_connection.execute("SELECT SupplierID, CompanyName FROM Suppliers;")
     suppliers = await cursor.fetchall()
-    return {
-        "products": suppliers,
-    }
+    for supplier in suppliers:
+        for record in supplier:
+            lista.append({"SupplierID": record[0], "CompanyName": record[1]})
+    return lista
