@@ -160,6 +160,7 @@ def info(format: str | None = '', user_agent: str | None = Header(default=None))
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
+
 def check_file_exist_2():
     if not exists("strings.json"):
         file = open("strings.json", "w")
@@ -170,11 +171,13 @@ def check_file_exist_2():
     file.close()
     return json.loads(strings_list)
 
+
 @app.get("/save/{string}", status_code=404)
 def get_string(string: str):
     string_list = check_file_exist_2()
     if string in string_list:
         return RedirectResponse("https://delfin7.herokuapp.com/info", status_code=status.HTTP_301_MOVED_PERMANENTLY)
+
 
 @app.put("/save/{string}", status_code=200)
 def put_string(string: str):
@@ -185,6 +188,7 @@ def put_string(string: str):
     file.write(json.dumps(string_list))
     file.close()
 
+
 @app.delete("/save/{string}", status_code=200)
 def delete_string(string: str):
     string_list = check_file_exist_2()
@@ -193,6 +197,7 @@ def delete_string(string: str):
     file = open("strings.json", "w")
     file.write(json.dumps(string_list))
     file.close()
+
 
 @app.on_event("startup")
 async def startup():
@@ -214,6 +219,7 @@ async def suppliers():
         lista.append({"SupplierID": supplier[0], "CompanyName": supplier[1]})
     return lista
 
+
 @app.get("/suppliers/{id}", status_code=200)
 async def suppliers(id: int):
     lista = []
@@ -221,17 +227,19 @@ async def suppliers(id: int):
     supplier = await cursor.fetchall()
     for info in supplier:
         for details in info:
-            print(details)
             lista.append(details)
+    print(lista)
+    if not lista:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return {"SupplierID": lista[0],
-    "CompanyName": lista[1],
-    "ContactName": lista[2],
-    "ContactTitle": lista[3],
-    "Address": lista[4],
-    "City": lista[5],
-    "Region": lista[6],
-    "PostalCode": lista[7],
-    "Country": lista[8],
-    "Phone": lista[9],
-    "Fax": lista[10],
-    "HomePage": lista[11],}
+            "CompanyName": lista[1],
+            "ContactName": lista[2],
+            "ContactTitle": lista[3],
+            "Address": lista[4],
+            "City": lista[5],
+            "Region": lista[6],
+            "PostalCode": lista[7],
+            "Country": lista[8],
+            "Phone": lista[9],
+            "Fax": lista[10],
+            "HomePage": lista[11], }
