@@ -217,5 +217,16 @@ async def suppliers():
 @app.get("/suppliers/{id}", status_code=200)
 async def suppliers(id: int):
     cursor = await app.db_connection.execute(f"SELECT * FROM Suppliers WHERE SupplierID = {id}")
-    #suppliers = await cursor.fetchall()
-    return await cursor.fetchall()
+    supplier = await cursor.fetchall()
+    return {"SupplierID": supplier[0],
+    "CompanyName": supplier[1],
+    "ContactName": supplier[2],
+    "ContactTitle": supplier[3],
+    "Address": supplier[4],
+    "City": supplier[5],
+    "Region": supplier[6],
+    "PostalCode": supplier[7],
+    "Country": supplier[8],
+    "Phone": supplier[9],
+    "Fax": supplier[10],
+    "HomePage": supplier[11],}
