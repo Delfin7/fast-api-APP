@@ -215,7 +215,7 @@ async def suppliers():
     return lista
 
 @app.get("/suppliers/{id}", status_code=200)
-async def suppliers():
+async def suppliers(id: int):
     cursor = await app.db_connection.execute(f"SELECT * FROM Suppliers WHERE SupplierID = {id}")
     #suppliers = await cursor.fetchall()
     return await cursor.fetchall()
