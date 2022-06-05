@@ -213,3 +213,9 @@ async def suppliers():
     for supplier in suppliers:
         lista.append({"SupplierID": supplier[0], "CompanyName": supplier[1]})
     return lista
+
+@app.get("/suppliers/{id}", status_code=200)
+async def suppliers():
+    cursor = await app.db_connection.execute(f"SELECT * FROM Suppliers WHERE SupplierID = {id}")
+    #suppliers = await cursor.fetchall()
+    return await cursor.fetchall()
