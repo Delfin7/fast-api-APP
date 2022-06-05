@@ -250,7 +250,7 @@ async def products(id: int):
     cursor = await app.db_connection.execute(f"SELECT Products.ProductID, Products.ProductName, Products.CategoryID, c.CategoryName, Products.Discontinued FROM Products INNER JOIN Categories c ON Products.CategoryID =c.CategoryID  WHERE SupplierID = {id} ORDER BY Products.ProductID DESC ;")
     products = await cursor.fetchall()
     for product in products:
-        lista.append({"ProductID": product[0], "ProductName": product[1], "Category": {"CategoryID": product[2], "CategoryName": product[3]}, "Discontinued": product[4],})
+        lista.append({"ProductID": product[0], "ProductName": product[1], "Category": {"CategoryID": product[2], "CategoryName": product[3]}, "Discontinued": int(product[4]),})
     if not lista:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return lista
