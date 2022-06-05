@@ -221,16 +221,15 @@ async def suppliers(id: int):
     supplier = await cursor.fetchall()
     for info in supplier:
         lista.append(info)
-    print(info)
-    return {"SupplierID": supplier[0],
-    "CompanyName": supplier[1],
-    "ContactName": supplier[2],
-    "ContactTitle": supplier[3],
-    "Address": supplier[4],
-    "City": supplier[5],
-    "Region": supplier[6],
-    "PostalCode": supplier[7],
-    "Country": supplier[8],
-    "Phone": supplier[9],
-    "Fax": supplier[10],
-    "HomePage": supplier[11],}
+    return {"SupplierID": lista[0],
+    "CompanyName": lista[1],
+    "ContactName": lista[2],
+    "ContactTitle": lista[3],
+    "Address": lista[4],
+    "City": lista[5],
+    "Region": lista[6],
+    "PostalCode": lista[7],
+    "Country": lista[8],
+    "Phone": lista[9],
+    "Fax": lista[10],
+    "HomePage": lista[11],}
