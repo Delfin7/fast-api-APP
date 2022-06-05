@@ -222,15 +222,16 @@ async def suppliers(id: int):
     for info in supplier:
         print(info)
         lista.append(info)
-    return {"SupplierID": lista[0],
-    "CompanyName": lista[1],
-    "ContactName": lista[2],
-    "ContactTitle": lista[3],
-    "Address": lista[4],
-    "City": lista[5],
-    "Region": lista[6],
-    "PostalCode": lista[7],
-    "Country": lista[8],
-    "Phone": lista[9],
-    "Fax": lista[10],
-    "HomePage": lista[11],}
+    return lista
+    # return {"SupplierID": lista[0],
+    # "CompanyName": lista[1],
+    # "ContactName": lista[2],
+    # "ContactTitle": lista[3],
+    # "Address": lista[4],
+    # "City": lista[5],
+    # "Region": lista[6],
+    # "PostalCode": lista[7],
+    # "Country": lista[8],
+    # "Phone": lista[9],
+    # "Fax": lista[10],
+    # "HomePage": lista[11],}
