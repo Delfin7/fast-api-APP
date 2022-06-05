@@ -245,7 +245,7 @@ async def suppliers(id: int):
             "HomePage": lista[11], }
 
 @app.get("/suppliers/{id}/products", status_code=200)
-async def products():
+async def products(id: int):
     lista = []
     cursor = await app.db_connection.execute(f"SELECT Products.ProductID, Products.ProductName, Products.CategoryID, c.CategoryName, Products.Discontinued FROM Products INNER JOIN Categories c ON Products.CategoryID =c.CategoryID  WHERE SupplierID = {id} ORDER BY Products.ProductID DESC ;")
     products = await cursor.fetchall()
