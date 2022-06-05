@@ -218,6 +218,7 @@ async def suppliers():
 async def suppliers(id: int):
     cursor = await app.db_connection.execute(f"SELECT * FROM Suppliers WHERE SupplierID = {id}")
     supplier = await cursor.fetchall()
+    print(supplier)
     return {"SupplierID": supplier[0],
     "CompanyName": supplier[1],
     "ContactName": supplier[2],
