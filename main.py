@@ -254,3 +254,20 @@ async def products(id: int):
     if not lista:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return lista
+
+class Suppliers(BaseModel):
+    CompanyName: str
+    ContactName: str
+    ContactTitle: str
+    Address: str
+    City: str
+    PostalCode: str
+    Country: str
+    Phone: str
+
+@app.post("/suppliers", status_code=200)
+async def products(suppliers_data: Suppliers):
+    lista = []
+    cursor = await app.db_connection.execute("SELECT SupplierID FROM Suppliers ;")
+    products = await cursor.fetchall()
+    return len(products)
