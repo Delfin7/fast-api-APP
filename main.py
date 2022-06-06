@@ -332,7 +332,7 @@ async def products(suppliers_data: Suppliers_put, id: int):
             "Fax": lista[9],
             "HomePage": lista[10], }
 
-@app.delete("/suppliers/{id}", status_code=200)
+@app.delete("/suppliers/{id}", status_code=204)
 async def products(id: int):
     cursor = await app.db_connection.execute(f"SELECT SupplierID FROM Suppliers WHERE SupplierID = {id};")
     data = cursor.fetchall()
