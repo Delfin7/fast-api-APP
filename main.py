@@ -270,13 +270,16 @@ async def products(suppliers_data: Suppliers):
     lista = []
     cursor = await app.db_connection.execute("SELECT SupplierID FROM Suppliers ;")
     next_id = len(await cursor.fetchall()) + 1
-    cursor = await app.db_connection.execute(f"INSERT INTO Suppliers  VALUES  ({next_id}, '{suppliers_data.CompanyName}' , '{suppliers_data.ContactName}' , '{suppliers_data.ContactTitle}' , '{suppliers_data.Address}' , '{suppliers_data.City}' , NULL, '{suppliers_data.PostalCode}' , '{suppliers_data.Country}' , '{suppliers_data.Phone}' ,NULL,NULL);")
+    cursor = await app.db_connection.execute(f"INSERT INTO Suppliers  VALUES  ({next_id}, '{suppliers_data.CompanyName}' , '{suppliers_data.ContactName}' , '{suppliers_data.ContactTitle}' , '{suppliers_data.Address}' , '{suppliers_data.City}' , NONE, '{suppliers_data.PostalCode}' , '{suppliers_data.Country}' , '{suppliers_data.Phone}' ,NONE,NONE);")
     cursor = await app.db_connection.execute(
         f"SELECT SupplierID, CompanyName, ContactName, ContactTitle, Address, City, PostalCode, Country, Phone, Fax, HomePage FROM Suppliers WHERE SupplierID = {next_id};")
     wynik = await cursor.fetchall()
     for info in wynik:
         for details in info:
-            lista.append(details)
+            if info != "NULL":
+                lista.append(details)
+            else:
+                lista.append(None)
     if not lista:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return {"SupplierID": lista[0],
