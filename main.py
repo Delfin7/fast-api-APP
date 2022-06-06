@@ -257,13 +257,13 @@ async def products(id: int):
 
 class Suppliers(BaseModel):
     CompanyName: str
-    ContactName: str = "NULL"
-    ContactTitle: str = "NULL"
-    Address: str = "NULL"
-    City: str = "NULL"
-    PostalCode: str = "NULL"
-    Country: str = "NULL"
-    Phone: str = "NULL"
+    ContactName: str = "NONE"
+    ContactTitle: str = "NONE"
+    Address: str = "NONE"
+    City: str = "NONE"
+    PostalCode: str = "NONE"
+    Country: str = "NONE"
+    Phone: str = "NONE"
 
 @app.post("/suppliers", status_code=201)
 async def products(suppliers_data: Suppliers):
