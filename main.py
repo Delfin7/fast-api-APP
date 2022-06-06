@@ -307,16 +307,17 @@ class Suppliers_put(BaseModel):
 @app.put("/suppliers/{id}", status_code=200)
 async def products(suppliers_data: Suppliers_put, id: int):
     lista = []
-    cursor = await app.db_connection.execute(f"UPDATE Suppliers SET CompanyName = '{suppliers_data.CompanyName}' WHERE SupplierID = {id};")
+    if suppliers_data.CompanyName != "NONE":
+        cursor = await app.db_connection.execute(f"UPDATE Suppliers SET CompanyName = '{suppliers_data.CompanyName}' WHERE SupplierID = {id};")
     cursor = await app.db_connection.execute(
         f"SELECT SupplierID, CompanyName, ContactName, ContactTitle, Address, City, PostalCode, Country, Phone, Fax, HomePage FROM Suppliers WHERE SupplierID = {id};")
     wynik = await cursor.fetchall()
     for info in wynik:
         for details in info:
-            #if details != "NONE":
-            lista.append(details)
-            # else:
-            #     lista.append(None)
+            if details != "NONE":
+                lista.append(details)
+            else:
+               lista.append(None)
     if not lista:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return {"SupplierID": lista[0],
