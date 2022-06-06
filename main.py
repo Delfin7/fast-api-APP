@@ -331,3 +331,12 @@ async def products(suppliers_data: Suppliers_put, id: int):
             "Phone": lista[8],
             "Fax": lista[9],
             "HomePage": lista[10], }
+
+@app.delete("/suppliers/{id}", status_code=200)
+async def products(id: int):
+    cursor = await app.db_connection.execute(f"SELECT SupplierID FROM Suppliers WHERE SupplierID = {id};")
+    data = cursor.fetchall()
+    if not data:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    cursor = await app.db_connection.execute(
+        f"DELETE FROM Suppliers WHERE SupplierID = {id};")
