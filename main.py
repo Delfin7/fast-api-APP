@@ -297,7 +297,7 @@ async def products(suppliers_data: Suppliers):
 class Suppliers_put(BaseModel):
     CompanyName: str = "NONE"
     ContactName: str = "NONE"
-    # ContactTitle: str = "NONE"
+    ContactTitle: str = "NONE"
     # Address: str = "NONE"
     # City: str = "NONE"
     # PostalCode: str = "NONE"
@@ -312,6 +312,9 @@ async def products(suppliers_data: Suppliers_put, id: int):
     if suppliers_data.ContactName != "NONE":
         cursor = await app.db_connection.execute(
             f"UPDATE Suppliers SET ContactName = '{suppliers_data.ContactName}' WHERE SupplierID = {id};")
+    if suppliers_data.ContactTitle != "NONE":
+        cursor = await app.db_connection.execute(
+            f"UPDATE Suppliers SET ContactTitle = '{suppliers_data.ContactTitle}' WHERE SupplierID = {id};")
     cursor = await app.db_connection.execute(
         f"SELECT SupplierID, CompanyName, ContactName, ContactTitle, Address, City, PostalCode, Country, Phone, Fax, HomePage FROM Suppliers WHERE SupplierID = {id};")
     wynik = await cursor.fetchall()
