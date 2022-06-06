@@ -276,7 +276,7 @@ async def products(suppliers_data: Suppliers):
     wynik = await cursor.fetchall()
     for info in wynik:
         for details in info:
-            if info != "NULL":
+            if info != "NONE":
                 lista.append(details)
             else:
                 lista.append(None)
