@@ -271,5 +271,7 @@ async def products(suppliers_data: Suppliers):
     cursor = await app.db_connection.execute("SELECT SupplierID FROM Suppliers ;")
     next_id = len(await cursor.fetchall()) + 1
     cursor = await app.db_connection.execute(f"INSERT INTO Suppliers  VALUES  ({next_id}, {suppliers_data.CompanyName},{suppliers_data.ContactName},{suppliers_data.ContactTitle},{suppliers_data.Address},{suppliers_data.City}, NULL,{suppliers_data.PostalCode},{suppliers_data.Country},{suppliers_data.Phone},NULL,NULL);")
+    cursor = await app.db_connection.execute(
+        f"SELECT * FROM Suppliers WHERE SupplierID = {next_id};")
     wynik = await cursor.fetchall()
     return wynik
