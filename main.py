@@ -293,3 +293,40 @@ async def products(suppliers_data: Suppliers):
             "Phone": lista[8],
             "Fax": lista[9],
             "HomePage": lista[10], }
+
+class Suppliers(BaseModel):
+    CompanyName: str
+    # ContactName: str = "NONE"
+    # ContactTitle: str = "NONE"
+    # Address: str = "NONE"
+    # City: str = "NONE"
+    # PostalCode: str = "NONE"
+    # Country: str = "NONE"
+    # Phone: str = "NONE"
+
+@app.put("/suppliers/{id}", status_code=200)
+async def products(suppliers_data: Suppliers, id: int):
+    lista = []
+    cursor = await app.db_connection.execute(f"UPDATE Suppliers SET CompanyName = '{suppliers_data.CompanyName}' WHERE SupplierID = {id};")
+    cursor = await app.db_connection.execute(
+        f"SELECT SupplierID, CompanyName, ContactName, ContactTitle, Address, City, PostalCode, Country, Phone, Fax, HomePage FROM Suppliers WHERE SupplierID = {id};")
+    wynik = await cursor.fetchall()
+    for info in wynik:
+        for details in info:
+            if details != "NONE":
+                lista.append(details)
+            else:
+                lista.append(None)
+    if not lista:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    return {"SupplierID": lista[0],
+            "CompanyName": lista[1],
+            "ContactName": lista[2],
+            "ContactTitle": lista[3],
+            "Address": lista[4],
+            "City": lista[5],
+            "PostalCode": lista[6],
+            "Country": lista[7],
+            "Phone": lista[8],
+            "Fax": lista[9],
+            "HomePage": lista[10], }
