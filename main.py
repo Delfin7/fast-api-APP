@@ -265,13 +265,13 @@ class Suppliers(BaseModel):
     Country: str
     Phone: str
 
-@app.post("/suppliers", status_code=200)
+@app.post("/suppliers", status_code=201)
 async def products(suppliers_data: Suppliers):
     lista = []
     cursor = await app.db_connection.execute("SELECT SupplierID FROM Suppliers ;")
     next_id = len(await cursor.fetchall()) + 1
     cursor = await app.db_connection.execute(f"INSERT INTO Suppliers  VALUES  ({next_id}, '{suppliers_data.CompanyName}' , '{suppliers_data.ContactName}' , '{suppliers_data.ContactTitle}' , '{suppliers_data.Address}' , '{suppliers_data.City}' , NULL, '{suppliers_data.PostalCode}' , '{suppliers_data.Country}' , '{suppliers_data.Phone}' ,NULL,NULL);")
     cursor = await app.db_connection.execute(
-        f"SELECT * FROM Suppliers WHERE SupplierID = {next_id};")
+        f"SELECT SupplierID, CompanyName, ContactName, ContactTitle, Address, City, PostalCode, Country, Phone, Fax, HomePage FROM Suppliers WHERE SupplierID = {next_id};")
     wynik = await cursor.fetchall()
     return wynik
