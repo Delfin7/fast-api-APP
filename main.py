@@ -294,7 +294,7 @@ async def products(suppliers_data: Suppliers):
             "Fax": lista[9],
             "HomePage": lista[10], }
 
-class Suppliers(BaseModel):
+class Suppliers_put(BaseModel):
     CompanyName: str
     # ContactName: str = "NONE"
     # ContactTitle: str = "NONE"
@@ -305,7 +305,7 @@ class Suppliers(BaseModel):
     # Phone: str = "NONE"
 
 @app.put("/suppliers/{id}", status_code=200)
-async def products(suppliers_data: Suppliers, id: int):
+async def products(suppliers_data: Suppliers_put, id: int):
     lista = []
     cursor = await app.db_connection.execute(f"UPDATE Suppliers SET CompanyName = '{suppliers_data.CompanyName}' WHERE SupplierID = {id};")
     cursor = await app.db_connection.execute(
