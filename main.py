@@ -295,7 +295,7 @@ async def products(suppliers_data: Suppliers):
             "HomePage": lista[10], }
 
 class Suppliers_put(BaseModel):
-    CompanyName: str
+    CompanyName: str = "NONE"
     # ContactName: str = "NONE"
     # ContactTitle: str = "NONE"
     # Address: str = "NONE"
@@ -313,10 +313,10 @@ async def products(suppliers_data: Suppliers_put, id: int):
     wynik = await cursor.fetchall()
     for info in wynik:
         for details in info:
-            if details != "NONE":
-                lista.append(details)
-            else:
-                lista.append(None)
+            #if details != "NONE":
+            lista.append(details)
+            # else:
+            #     lista.append(None)
     if not lista:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return {"SupplierID": lista[0],
