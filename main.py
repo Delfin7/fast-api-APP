@@ -274,4 +274,19 @@ async def products(suppliers_data: Suppliers):
     cursor = await app.db_connection.execute(
         f"SELECT SupplierID, CompanyName, ContactName, ContactTitle, Address, City, PostalCode, Country, Phone, Fax, HomePage FROM Suppliers WHERE SupplierID = {next_id};")
     wynik = await cursor.fetchall()
-    return wynik
+    for info in wynik:
+        for details in info:
+            lista.append(details)
+    if not lista:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    return {"SupplierID": lista[0],
+            "CompanyName": lista[1],
+            "ContactName": lista[2],
+            "ContactTitle": lista[3],
+            "Address": lista[4],
+            "City": lista[5],
+            "PostalCode": lista[6],
+            "Country": lista[7],
+            "Phone": lista[8],
+            "Fax": lista[9],
+            "HomePage": lista[10], }
